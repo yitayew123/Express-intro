@@ -98,9 +98,7 @@
 //   console.log("Server running on port 3000");
 // });
 
-
 // Middleware Example:
-
 
 const express = require("express");
 
@@ -116,6 +114,44 @@ const registerRequestResponseCycle = require("./Middleware/RequestResponseCycle"
 // Import Topic 3: Middleware Parameters (Attaching Data to `req`)
 const registerMiddlewareParameters = require("./Middleware/MiddlewareParameters");
 
+// Import Topic 4: Application-Level Middleware (Prefix Matching)
+const registerApplicationLevelMiddleware = require("./Middleware/ApplicationLevelMiddleware");
+
+// Import Topic 5: Built-in Middleware (Body Parsing)
+const registerBuiltInMiddleware = require("./Middleware/BuiltInMiddleware");
+
+// Import Topic 6: Router-Level Middleware (Modular Isolation)
+const routerLevelMiddleware = require("./Middleware/RouterLevelMiddleware");
+// // Mount the router at a specific path
+app.use("/middleware/router-level", routerLevelMiddleware);
+
+// Import Topic 7: Third-Party Middleware (Logging & Security)
+const thirdPartyMiddleware = require("./Middleware/ThirdPartyMiddleware");
+
+// Import Topic 8: Custom Middleware (Route-Specific Application)
+const customMiddleware = require("./Middleware/CustomMiddleware");
+
+// Import Topic 9: Middleware Execution Order (The Waterfall)
+const middlewareExecutionOrder = require("./Middleware/MiddlewareExecutionOrder");
+
+// Import Topic 10: `next()` vs `next("route")` (Conditional Skipping)
+const nextFunction = require("./Middleware/NextFunction");
+
+// Import Topic 11: Conditional Middleware (Route-Specific Authorization)
+const conditionalMiddleware = require("./Middleware/ConditionalMiddleware");
+
+// Import Topic 12: Custom Logging Middleware (Timing with res.on("finish"))
+const loggingMiddleware = require("./Middleware/LoggingMiddleware");
+
+// Import Topic 13: Authentication Middleware (Bearer Token Verification)
+const authenticationMiddleware = require("./Middleware/AuthenticationMiddleware");
+
+// Import Topic 14: Request Validation (Input Sanitization & Error Aggregation)
+const requestValidation = require("./Middleware/RequestValidation");
+
+// Import Topic 15: Static File Middleware (Serving HTML, CSS, and Images)
+const staticFileMiddleware = require("./Middleware/StaticFileMiddleware");
+
 // Register Topic 1
 registerMiddlewareIntroduction(app);
 
@@ -125,8 +161,49 @@ registerRequestResponseCycle(app);
 // Register Topic 3
 registerMiddlewareParameters(app);
 
+// Register Topic 4
+registerApplicationLevelMiddleware(app);
+
+// Register Topic 5
+registerBuiltInMiddleware(app);
+
+// Register Topic 6
+// Mount the router-level middleware at a specific path
+// All routes defined in routerLevelMiddleware are now prefixed with /middleware/router-level
+app.use("/middleware/router-level", routerLevelMiddleware);
+
+// Register Topic 7
+thirdPartyMiddleware(app);
+
+// Register Topic 8
+customMiddleware(app);
+
+// Register Topic 9
+middlewareExecutionOrder(app);
+
+// Register Topic 10
+nextFunction(app);
+
+// Register Topic 11
+conditionalMiddleware(app);
+
+// Register Topic 12
+loggingMiddleware(app);
+// Register Topic 13
+authenticationMiddleware(app);
+
+// Register Topic 14
+requestValidation(app);
+
+// Register Topic 15
+staticFileMiddleware(app);
+
+// Define a catch-all route for undefined paths (404 Not Found)
+app.use((req, res) => {
+  res.status(404).send("404 Not Found: The requested resource does not exist.");
+});
+
 // Start the Express server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
-

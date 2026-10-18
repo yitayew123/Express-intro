@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Express Static Files</title>
+  <!-- 
+    This path must match the mount prefix in express.static().
+    Since we mounted at "/middleware/static", we prefix the CSS file 
+    with that exact path.
+  -->
+  <link rel="stylesheet" href="/middleware/static/style.css">
+</head>
+<body>
+  <main>
+    <h1>Express Static Middleware</h1>
+    <p>This HTML file is served using express.static().</p>
+  </main>
+</body>
+</html>
