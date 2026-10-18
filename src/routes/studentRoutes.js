@@ -56,45 +56,87 @@
 // // Export the router so it can be imported and mounted in the main app
 // module.exports = router;
 
+// ===============================Route prefix Example:=====================================
 
-// Route prefix Example:
+// /**
+//  * Student Router Module (Version 1)
+//  *
+//  * This file demonstrates:
+//  * 1. Defining routes on an Express Router (no app.listen here).
+//  * 2. Using relative paths that will be prefixed when mounted.
+//  * 3. Returning simple JSON responses (mock data, no in-memory store yet).
+//  * 4. Including a `version` field in responses to show which API version served them.
+//  *
+//  * Note: The paths here are RELATIVE. They only become full URLs
+//  * after the router is mounted in app.js with a prefix.
+//  */
 
+// const express = require("express");
+
+// // Create a router instance
+// const router = express.Router();
+
+// // Route: GET / (relative)
+// // When mounted at /api/v1/students, this responds to GET /api/v1/students
+// router.get("/", (req, res) => {
+//   res.json({
+//     message: "All students",
+//     version: "v1"
+//   });
+// });
+
+// // Route: GET /:id (relative)
+// // When mounted at /api/v1/students, this responds to GET /api/v1/students/:id
+// router.get("/:id", (req, res) => {
+//   res.json({
+//     message: "Student details",
+//     studentId: req.params.id,  // Echoes back the URL parameter
+//     version: "v1"
+//   });
+// });
+
+// // Export the router so it can be mounted in the main app
+// module.exports = router;
+
+// ==================================Route Organization Example (with Controller)=====================================
 /**
- * Student Router Module (Version 1)
+ * Student Routes
  *
  * This file demonstrates:
- * 1. Defining routes on an Express Router (no app.listen here).
- * 2. Using relative paths that will be prefixed when mounted.
- * 3. Returning simple JSON responses (mock data, no in-memory store yet).
- * 4. Including a `version` field in responses to show which API version served them.
+ * 1. The "Router" part of the MVC pattern.
+ * 2. Mapping HTTP methods and URLs to specific controller functions.
+ * 3. Keeping route files incredibly clean and readable.
  *
- * Note: The paths here are RELATIVE. They only become full URLs
- * after the router is mounted in app.js with a prefix.
+ * Notice how there is ZERO business logic here.
+ * The router's ONLY job is to say: "When a GET request hits '/', run getAllStudents."
  */
 
 const express = require("express");
-
-// Create a router instance
 const router = express.Router();
 
-// Route: GET / (relative)
-// When mounted at /api/v1/students, this responds to GET /api/v1/students
-router.get("/", (req, res) => {
-  res.json({
-    message: "All students",
-    version: "v1"
-  });
-});
+// Import the controller functions using destructuring
+const {
+  getAllStudents,
+  getStudentById,
+  createStudent,
+  replaceStudent,
+  updateStudent,
+  deleteStudent,
+} = require("../controllers/studentController");
 
-// Route: GET /:id (relative)
-// When mounted at /api/v1/students, this responds to GET /api/v1/students/:id
-router.get("/:id", (req, res) => {
-  res.json({
-    message: "Student details",
-    studentId: req.params.id,  // Echoes back the URL parameter
-    version: "v1"
-  });
-});
+// =================================================================
+// COLLECTION ROUTES (/)
+// =================================================================
+router.get("/", getAllStudents); // GET all
+router.post("/", createStudent); // CREATE new
 
-// Export the router so it can be mounted in the main app
+// =================================================================
+// INDIVIDUAL RESOURCE ROUTES (/:id)
+// =================================================================
+router.get("/:id", getStudentById); // GET one
+router.put("/:id", replaceStudent); // FULL replace
+router.patch("/:id", updateStudent); // PARTIAL update
+router.delete("/:id", deleteStudent); // DELETE
+
+// Export the configured router
 module.exports = router;

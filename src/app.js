@@ -98,112 +98,208 @@
 //   console.log("Server running on port 3000");
 // });
 
-// Middleware Example:
+// ===============================================Middleware Example:=============================
 
+// const express = require("express");
+
+// const app = express();
+// const PORT = 3000;
+
+// // Import Topic 1: Introduction to Middleware
+// const registerMiddlewareIntroduction = require("./Middleware/MiddlewareIntroduction");
+
+// // Import Topic 2: Request-Response Cycle (Multiple Middleware Chain)
+// const registerRequestResponseCycle = require("./Middleware/RequestResponseCycle");
+
+// // Import Topic 3: Middleware Parameters (Attaching Data to `req`)
+// const registerMiddlewareParameters = require("./Middleware/MiddlewareParameters");
+
+// // Import Topic 4: Application-Level Middleware (Prefix Matching)
+// const registerApplicationLevelMiddleware = require("./Middleware/ApplicationLevelMiddleware");
+
+// // Import Topic 5: Built-in Middleware (Body Parsing)
+// const registerBuiltInMiddleware = require("./Middleware/BuiltInMiddleware");
+
+// // Import Topic 6: Router-Level Middleware (Modular Isolation)
+// const routerLevelMiddleware = require("./Middleware/RouterLevelMiddleware");
+// // // Mount the router at a specific path
+// app.use("/middleware/router-level", routerLevelMiddleware);
+
+// // Import Topic 7: Third-Party Middleware (Logging & Security)
+// const thirdPartyMiddleware = require("./Middleware/ThirdPartyMiddleware");
+
+// // Import Topic 8: Custom Middleware (Route-Specific Application)
+// const customMiddleware = require("./Middleware/CustomMiddleware");
+
+// // Import Topic 9: Middleware Execution Order (The Waterfall)
+// const middlewareExecutionOrder = require("./Middleware/MiddlewareExecutionOrder");
+
+// // Import Topic 10: `next()` vs `next("route")` (Conditional Skipping)
+// const nextFunction = require("./Middleware/NextFunction");
+
+// // Import Topic 11: Conditional Middleware (Route-Specific Authorization)
+// const conditionalMiddleware = require("./Middleware/ConditionalMiddleware");
+
+// // Import Topic 12: Custom Logging Middleware (Timing with res.on("finish"))
+// const loggingMiddleware = require("./Middleware/LoggingMiddleware");
+
+// // Import Topic 13: Authentication Middleware (Bearer Token Verification)
+// const authenticationMiddleware = require("./Middleware/AuthenticationMiddleware");
+
+// // Import Topic 14: Request Validation (Input Sanitization & Error Aggregation)
+// const requestValidation = require("./Middleware/RequestValidation");
+
+// // Import Topic 15: Static File Middleware (Serving HTML, CSS, and Images)
+// const staticFileMiddleware = require("./Middleware/StaticFileMiddleware");
+
+// // Register Topic 1
+// registerMiddlewareIntroduction(app);
+
+// // Register Topic 2
+// registerRequestResponseCycle(app);
+
+// // Register Topic 3
+// registerMiddlewareParameters(app);
+
+// // Register Topic 4
+// registerApplicationLevelMiddleware(app);
+
+// // Register Topic 5
+// registerBuiltInMiddleware(app);
+
+// // Register Topic 6
+// // Mount the router-level middleware at a specific path
+// // All routes defined in routerLevelMiddleware are now prefixed with /middleware/router-level
+// app.use("/middleware/router-level", routerLevelMiddleware);
+
+// // Register Topic 7
+// thirdPartyMiddleware(app);
+
+// // Register Topic 8
+// customMiddleware(app);
+
+// // Register Topic 9
+// middlewareExecutionOrder(app);
+
+// // Register Topic 10
+// nextFunction(app);
+
+// // Register Topic 11
+// conditionalMiddleware(app);
+
+// // Register Topic 12
+// loggingMiddleware(app);
+// // Register Topic 13
+// authenticationMiddleware(app);
+
+// // Register Topic 14
+// requestValidation(app);
+
+// // Register Topic 15
+// staticFileMiddleware(app);
+
+// // Define a catch-all route for undefined paths (404 Not Found)
+// app.use((req, res) => {
+//   res.status(404).send("404 Not Found: The requested resource does not exist.");
+// });
+
+// // Start the Express server
+// app.listen(PORT, () => {
+//   console.log(`Server running at http://localhost:${PORT}`);
+// });
+
+// // ==============================================Controller Example:=============================
+
+// /**
+//  * Main Server File — Full CRUD with MVC Architecture
+//  *
+//  * This file demonstrates:
+//  * 1. Wiring the controller and router into the main app.
+//  * 2. Using a versioned/routing prefix ("/routing-demo/students").
+//  * 3. A global 404 catch-all handler (crucial for clean API responses).
+//  */
+
+// const express = require("express");
+
+// const app = express();
+// const PORT = 3000;
+
+// // Middleware to parse JSON bodies (Required for POST, PUT, PATCH)
+// app.use(express.json());
+
+// // =================================================================
+// // MOUNT ROUTES
+// // =================================================================
+// const studentRoutes = require("./routes/studentRoutes");
+
+// // Mount the router at the prefix
+// app.use("/routing-demo/students", studentRoutes);
+
+// // =================================================================
+// // 404 CATCH-ALL HANDLER
+// // =================================================================
+// // If a request makes it this far, it means no route above matched.
+// // Instead of Express's default HTML 404 page, we send a clean JSON 404.
+// // Note: This MUST be placed AFTER all other routes.
+// app.use((req, res) => {
+//   res.status(404).json({
+//     success: false,
+//     message: "Route not found",
+//   });
+// });
+
+// // =================================================================
+// // START SERVER
+// // =================================================================
+// app.listen(PORT, () => {
+//   console.log(`Server running at http://localhost:${PORT}`);
+// });
+
+// ============================================Restfull API Example:=============================
 const express = require("express");
 
 const app = express();
 const PORT = 3000;
 
-// Import Topic 1: Introduction to Middleware
-const registerMiddlewareIntroduction = require("./Middleware/MiddlewareIntroduction");
+// Middleware for parsing JSON request bodies
+app.use(express.json());
 
-// Import Topic 2: Request-Response Cycle (Multiple Middleware Chain)
-const registerRequestResponseCycle = require("./Middleware/RequestResponseCycle");
+// Import Module 6, Topic 1
+const registerIntroductionToREST = require("./RestFull_API/IntroductionToREST");
 
-// Import Topic 3: Middleware Parameters (Attaching Data to `req`)
-const registerMiddlewareParameters = require("./Middleware/MiddlewareParameters");
+// Import Module 6, Topic 2
+const registerRESTPrinciples = require("./RestFull_API/RESTPrinciples");
 
-// Import Topic 4: Application-Level Middleware (Prefix Matching)
-const registerApplicationLevelMiddleware = require("./Middleware/ApplicationLevelMiddleware");
+// Import Module 6, Topic 3
+const registerCRUDOperations = require("./RestFull_API/CRUDOperations");
 
-// Import Topic 5: Built-in Middleware (Body Parsing)
-const registerBuiltInMiddleware = require("./Middleware/BuiltInMiddleware");
+// Import Module 6, Topic 4
+const registerDesigningRESTfulEndpoints = require("./RestFull_API/DesigningRESTfulEndpoints");
 
-// Import Topic 6: Router-Level Middleware (Modular Isolation)
-const routerLevelMiddleware = require("./Middleware/RouterLevelMiddleware");
-// // Mount the router at a specific path
-app.use("/middleware/router-level", routerLevelMiddleware);
+// Import Module 6, Topic 5
+const registerCompleteCRUD = require("./RestFull_API/CompleteCRUD");
 
-// Import Topic 7: Third-Party Middleware (Logging & Security)
-const thirdPartyMiddleware = require("./Middleware/ThirdPartyMiddleware");
-
-// Import Topic 8: Custom Middleware (Route-Specific Application)
-const customMiddleware = require("./Middleware/CustomMiddleware");
-
-// Import Topic 9: Middleware Execution Order (The Waterfall)
-const middlewareExecutionOrder = require("./Middleware/MiddlewareExecutionOrder");
-
-// Import Topic 10: `next()` vs `next("route")` (Conditional Skipping)
-const nextFunction = require("./Middleware/NextFunction");
-
-// Import Topic 11: Conditional Middleware (Route-Specific Authorization)
-const conditionalMiddleware = require("./Middleware/ConditionalMiddleware");
-
-// Import Topic 12: Custom Logging Middleware (Timing with res.on("finish"))
-const loggingMiddleware = require("./Middleware/LoggingMiddleware");
-
-// Import Topic 13: Authentication Middleware (Bearer Token Verification)
-const authenticationMiddleware = require("./Middleware/AuthenticationMiddleware");
-
-// Import Topic 14: Request Validation (Input Sanitization & Error Aggregation)
-const requestValidation = require("./Middleware/RequestValidation");
-
-// Import Topic 15: Static File Middleware (Serving HTML, CSS, and Images)
-const staticFileMiddleware = require("./Middleware/StaticFileMiddleware");
+// Import Module 6, Topic 6
+const registerSortingPagination = require("./RestFull_API/SortingPagination");
 
 // Register Topic 1
-registerMiddlewareIntroduction(app);
+registerIntroductionToREST(app);
 
 // Register Topic 2
-registerRequestResponseCycle(app);
+registerRESTPrinciples(app);
 
 // Register Topic 3
-registerMiddlewareParameters(app);
+registerCRUDOperations(app);
 
 // Register Topic 4
-registerApplicationLevelMiddleware(app);
+registerDesigningRESTfulEndpoints(app);
 
 // Register Topic 5
-registerBuiltInMiddleware(app);
+registerCompleteCRUD(app);
 
 // Register Topic 6
-// Mount the router-level middleware at a specific path
-// All routes defined in routerLevelMiddleware are now prefixed with /middleware/router-level
-app.use("/middleware/router-level", routerLevelMiddleware);
-
-// Register Topic 7
-thirdPartyMiddleware(app);
-
-// Register Topic 8
-customMiddleware(app);
-
-// Register Topic 9
-middlewareExecutionOrder(app);
-
-// Register Topic 10
-nextFunction(app);
-
-// Register Topic 11
-conditionalMiddleware(app);
-
-// Register Topic 12
-loggingMiddleware(app);
-// Register Topic 13
-authenticationMiddleware(app);
-
-// Register Topic 14
-requestValidation(app);
-
-// Register Topic 15
-staticFileMiddleware(app);
-
-// Define a catch-all route for undefined paths (404 Not Found)
-app.use((req, res) => {
-  res.status(404).send("404 Not Found: The requested resource does not exist.");
-});
-
-// Start the Express server
+registerSortingPagination(app);
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
