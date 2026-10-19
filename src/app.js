@@ -256,7 +256,10 @@
 // });
 
 // ============================================Restfull API Example:=============================
+require("dotenv").config(); // 👈 Load environment variables FIRST
 const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const connectDB = require("./config/db"); // 👈 Import the DB connection
 
 const app = express();
 const PORT = 3000;
@@ -282,6 +285,35 @@ const registerCompleteCRUD = require("./RestFull_API/CompleteCRUD");
 // Import Module 6, Topic 6
 const registerSortingPagination = require("./RestFull_API/SortingPagination");
 
+// Import the global error handler (must be the VERY LAST middleware)
+const errorHandler = require("./Middleware/errorHandler");
+
+// Mount the global error handler (must be the VERY LAST middleware)
+app.use(errorHandler);
+
+// =================================================================
+// 3. SWAGGER DOCUMENTATION
+// =================================================================
+// Import the parsed OpenAPI configuration object (from your YAML/JS file)
+const openApiDocument = require("./API_Management/swaggerConfig");
+
+// Mount the Swagger UI.
+// `swaggerUi.serve` serves the static HTML/CSS/JS files for the UI.
+// `swaggerUi.setup(document)` injects your API specification into the UI.
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+
+// =================================================================
+// 4. 404 CATCH-ALL HANDLER
+// =================================================================
+// If a request reaches this point, it means no API route matched,
+// AND it's not a request for the Swagger UI.
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
 // Register Topic 1
 registerIntroductionToREST(app);
 
@@ -299,7 +331,24 @@ registerCompleteCRUD(app);
 
 // Register Topic 6
 registerSortingPagination(app);
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+
+// ==============================================================================
+// 5. DATABASE CONNECTION & SERVER STARTUP
+// ==============================================================================
+// We connect to the database first. Only if that succeeds do we start the server.
+// This ensures that the server doesn't run in a broken state without DB access.
+// 1. Connect to Database
+// ✅ CORRECT: Wait for DB before starting the server
+connectDB()
+  .then(() => {
+    // This ONLY runs if the DB connects successfully
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+      console.log(`API Docs available at http://localhost:${PORT}/api-docs`);
+    });
+  })
+  .catch((error) => {
+    // This runs if the DB connection fails
+    console.error("Failed to connect to the database:", error.message);
+    process.exit(1);
+  });

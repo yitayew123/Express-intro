@@ -220,3 +220,19 @@ module.exports = {
   updateStudent,
   deleteStudent,
 };
+
+// =================================Module export pattern allows us to import like this:=========
+// Inside src/controllers/studentController.js
+const Student = require("../models/Student");
+
+// CREATE: Add a student to the real database!
+async function createStudent(req, res) {
+  try {
+    // Student.create() runs validation and saves to MongoDB
+    const student = await Student.create(req.body);
+    res.status(201).json({ success: true, data: student });
+  } catch (error) {
+    // If validation fails, Mongoose sends a detailed error object
+    res.status(400).json({ success: false, error: error.message });
+  }
+}

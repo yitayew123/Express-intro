@@ -1,0 +1,188 @@
+
+openapi: 3.0.3
+
+info:
+  title: Student Management API
+  version: 1.0.0
+  description: >
+    API for creating, retrieving, updating, and deleting
+    student records.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: Students
+    description: Operations for managing students
+
+paths:
+  /api/v1/students:
+    get:
+      tags:
+        - Students
+      summary: Get all students
+      description: Returns the collection of students.
+      operationId: getAllStudents
+      responses:
+        "200":
+          description: Students retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Student"
+
+    post:
+      tags:
+        - Students
+      summary: Create a student
+      operationId: createStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "201":
+          description: Student created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentResponse"
+        "400":
+          description: Invalid student data
+
+  /api/v1/students/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique student identifier
+        schema:
+          type: integer
+        example: 1
+
+    get:
+      tags:
+        - Students
+      summary: Get a student by ID
+      operationId: getStudentById
+      responses:
+        "200":
+          description: Student retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentResponse"
+        "404":
+          description: Student not found
+
+    put:
+      tags:
+        - Students
+      summary: Replace a student
+      operationId: replaceStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "200":
+          description: Student replaced successfully
+        "400":
+          description: Invalid student data
+        "404":
+          description: Student not found
+
+    patch:
+      tags:
+        - Students
+      summary: Partially update a student
+      operationId: updateStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentUpdate"
+      responses:
+        "200":
+          description: Student updated successfully
+        "400":
+          description: Invalid student data
+        "404":
+          description: Student not found
+
+    delete:
+      tags:
+        - Students
+      summary: Delete a student
+      operationId: deleteStudent
+      responses:
+        "204":
+          description: Student deleted successfully
+        "404":
+          description: Student not found
+
+components:
+  schemas:
+    Student:
+      type: object
+      required:
+        - id
+        - name
+        - department
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Abebe
+        department:
+          type: string
+          example: Software Engineering
+
+    StudentInput:
+      type: object
+      required:
+        - name
+        - department
+      properties:
+        name:
+          type: string
+          example: Sara
+        department:
+          type: string
+          example: Information Systems
+
+    StudentUpdate:
+      type: object
+      minProperties: 1
+      properties:
+        name:
+          type: string
+          example: Sara
+        department:
+          type: string
+          example: Computer Science
+
+    StudentResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/Student"
